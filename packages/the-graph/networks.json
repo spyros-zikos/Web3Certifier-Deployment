@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "Certifier": {
+      "address": "0x00840ff961C471dDd33b17d188e72eE4C4694FAd",
+      "startBlock": 7803096
+    }
+  }
+}

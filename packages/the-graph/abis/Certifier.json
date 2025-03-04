@@ -1,0 +1,859 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "timeToCorrectExam",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      { "name": "priceFeed", "type": "address", "internalType": "address" }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "Certifier__AnswerHashesDontMatch",
+    "type": "error",
+    "inputs": [
+      { "name": "expected", "type": "bytes32", "internalType": "bytes32" },
+      { "name": "actual", "type": "bytes32", "internalType": "bytes32" }
+    ]
+  },
+  {
+    "name": "Certifier__AnswersLengthDontMatch",
+    "type": "error",
+    "inputs": [
+      {
+        "name": "correctAnswersLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "userAnswersLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  { "name": "Certifier__EtherTransferFailed", "type": "error", "inputs": [] },
+  {
+    "name": "Certifier__ExamAlreadyEnded",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__ExamEnded",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__ExamIsCancelled",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__ExamIsNotCancelled",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__NotEnoughEther",
+    "type": "error",
+    "inputs": [
+      { "name": "amountSent", "type": "uint256", "internalType": "uint256" },
+      { "name": "examPrice", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__NotTheTimeForExamCorrection",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__OnlyCertifierCanCorrect",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__ThisExamIsNotFree",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" },
+      { "name": "price", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__ThisExamIsNotPaid",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__TooSoonToCancelExam",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__UserAlreadyClaimedCancelledExam",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__UserAlreadyClaimedNFT",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__UserAlreadySubmittedAnswers",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__UserDidNotParticipate",
+    "type": "error",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__UserFailedExam",
+    "type": "error",
+    "inputs": [
+      { "name": "userScore", "type": "uint256", "internalType": "uint256" },
+      { "name": "examBaseScore", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Certifier__WrongAnswers",
+    "type": "error",
+    "inputs": [
+      { "name": "expected", "type": "uint256", "internalType": "uint256" },
+      { "name": "actual", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "ERC721IncorrectOwner",
+    "type": "error",
+    "inputs": [
+      { "name": "sender", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+      { "name": "owner", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721InsufficientApproval",
+    "type": "error",
+    "inputs": [
+      { "name": "operator", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "ERC721InvalidApprover",
+    "type": "error",
+    "inputs": [
+      { "name": "approver", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721InvalidOperator",
+    "type": "error",
+    "inputs": [
+      { "name": "operator", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721InvalidOwner",
+    "type": "error",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721InvalidReceiver",
+    "type": "error",
+    "inputs": [
+      { "name": "receiver", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721InvalidSender",
+    "type": "error",
+    "inputs": [
+      { "name": "sender", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "name": "ERC721NonexistentToken",
+    "type": "error",
+    "inputs": [
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  { "name": "ReentrancyGuardReentrantCall", "type": "error", "inputs": [] },
+  {
+    "name": "StringsInsufficientHexLength",
+    "type": "error",
+    "inputs": [
+      { "name": "value", "type": "uint256", "internalType": "uint256" },
+      { "name": "length", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  {
+    "name": "Approval",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "approved",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ApprovalForAll",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "operator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "approved",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CancelExam",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ClaimNFT",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "ClaimRefund",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CorrectExam",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "answers",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "CreateExam",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "endTime",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "status",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum Status"
+      },
+      {
+        "name": "questions",
+        "type": "string[]",
+        "indexed": false,
+        "internalType": "string[]"
+      },
+      {
+        "name": "answers",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "price",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "baseScore",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "imageUrl",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "users",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "name": "etherAccumulated",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "certifier",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SubmitAnswersFree",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "hashedAnswer",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "SubmitAnswersPaid",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "examId",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "hashedAnswer",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "Transfer",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "approve",
+    "type": "function",
+    "inputs": [
+      { "name": "to", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "balanceOf",
+    "type": "function",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "cancelUncorrectedExam",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "claimCertificate",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" },
+      { "name": "answers", "type": "uint256[]", "internalType": "uint256[]" },
+      { "name": "secretNumber", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "correctExam",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" },
+      { "name": "answers", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "createExam",
+    "type": "function",
+    "inputs": [
+      { "name": "name", "type": "string", "internalType": "string" },
+      { "name": "description", "type": "string", "internalType": "string" },
+      { "name": "endTime", "type": "uint256", "internalType": "uint256" },
+      { "name": "questions", "type": "string[]", "internalType": "string[]" },
+      { "name": "price", "type": "uint256", "internalType": "uint256" },
+      { "name": "baseScore", "type": "uint256", "internalType": "uint256" },
+      { "name": "imageUrl", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "getApproved",
+    "type": "function",
+    "inputs": [
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getCertifierExams",
+    "type": "function",
+    "inputs": [
+      { "name": "certifier", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getDecimals",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "pure"
+  },
+  {
+    "name": "getExam",
+    "type": "function",
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          { "name": "id", "type": "uint256", "internalType": "uint256" },
+          { "name": "name", "type": "string", "internalType": "string" },
+          { "name": "description", "type": "string", "internalType": "string" },
+          { "name": "endTime", "type": "uint256", "internalType": "uint256" },
+          { "name": "status", "type": "uint8", "internalType": "enum Status" },
+          {
+            "name": "questions",
+            "type": "string[]",
+            "internalType": "string[]"
+          },
+          {
+            "name": "answers",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          { "name": "price", "type": "uint256", "internalType": "uint256" },
+          { "name": "baseScore", "type": "uint256", "internalType": "uint256" },
+          { "name": "imageUrl", "type": "string", "internalType": "string" },
+          { "name": "users", "type": "address[]", "internalType": "address[]" },
+          {
+            "name": "etherAccumulated",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          { "name": "certifier", "type": "address", "internalType": "address" }
+        ],
+        "internalType": "struct Exam"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getLastExamId",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTimeToCorrectExam",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getTokenCounter",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUsdToEthRate",
+    "type": "function",
+    "inputs": [
+      { "name": "usdAmount", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUser",
+    "type": "function",
+    "inputs": [
+      { "name": "index", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserAnswer",
+    "type": "function",
+    "inputs": [
+      { "name": "user", "type": "address", "internalType": "address" },
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bytes32", "internalType": "bytes32" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserFromUsername",
+    "type": "function",
+    "inputs": [
+      { "name": "username", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUserHasClaimed",
+    "type": "function",
+    "inputs": [
+      { "name": "user", "type": "address", "internalType": "address" },
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUsername",
+    "type": "function",
+    "inputs": [
+      { "name": "user", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "getUsers",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address[]", "internalType": "address[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "isApprovedForAll",
+    "type": "function",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" },
+      { "name": "operator", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "name",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "ownerOf",
+    "type": "function",
+    "inputs": [
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "refundExam",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "safeTransferFrom",
+    "type": "function",
+    "inputs": [
+      { "name": "from", "type": "address", "internalType": "address" },
+      { "name": "to", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "safeTransferFrom",
+    "type": "function",
+    "inputs": [
+      { "name": "from", "type": "address", "internalType": "address" },
+      { "name": "to", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+      { "name": "data", "type": "bytes", "internalType": "bytes" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setApprovalForAll",
+    "type": "function",
+    "inputs": [
+      { "name": "operator", "type": "address", "internalType": "address" },
+      { "name": "approved", "type": "bool", "internalType": "bool" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setUsername",
+    "type": "function",
+    "inputs": [
+      { "name": "username", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "submitAnswersFree",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" },
+      { "name": "hashedAnswer", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "submitAnswersPaid",
+    "type": "function",
+    "inputs": [
+      { "name": "examId", "type": "uint256", "internalType": "uint256" },
+      { "name": "hashedAnswer", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "supportsInterface",
+    "type": "function",
+    "inputs": [
+      { "name": "interfaceId", "type": "bytes4", "internalType": "bytes4" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "symbol",
+    "type": "function",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tokenURI",
+    "type": "function",
+    "inputs": [
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "name": "transferFrom",
+    "type": "function",
+    "inputs": [
+      { "name": "from", "type": "address", "internalType": "address" },
+      { "name": "to", "type": "address", "internalType": "address" },
+      { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

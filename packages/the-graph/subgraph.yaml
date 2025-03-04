@@ -1,0 +1,53 @@
+specVersion: 1.2.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Certifier
+    network: sepolia
+    source:
+      address: "0x00840ff961C471dDd33b17d188e72eE4C4694FAd"
+      abi: Certifier
+      startBlock: 7803096
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - CancelExam
+        - ClaimNFT
+        - ClaimRefund
+        - CorrectExam
+        - CreateExam
+        - SubmitAnswersFree
+        - SubmitAnswersPaid
+        - Transfer
+      abis:
+        - name: Certifier
+          file: ./abis/Certifier.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: CancelExam(uint256)
+          handler: handleCancelExam
+        - event: ClaimNFT(address,uint256,uint256)
+          handler: handleClaimNFT
+        - event: ClaimRefund(address,uint256)
+          handler: handleClaimRefund
+        - event: CorrectExam(uint256,uint256[])
+          handler: handleCorrectExam
+        - event: CreateExam(indexed uint256,string,string,uint256,uint8,string[],uint256[],uint256,uint256,string,address[],uint256,address)
+          handler: handleCreateExam
+        - event: SubmitAnswersFree(address,uint256,bytes32)
+          handler: handleSubmitAnswersFree
+        - event: SubmitAnswersPaid(address,uint256,bytes32)
+          handler: handleSubmitAnswersPaid
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/certifier.ts

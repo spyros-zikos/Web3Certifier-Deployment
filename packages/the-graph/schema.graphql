@@ -1,0 +1,105 @@
+type Approval @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  approved: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ApprovalForAll @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  operator: Bytes! # address
+  approved: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CancelExam @entity(immutable: true) {
+  id: Bytes!
+  examId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ClaimNFT @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  examId: BigInt! # uint256
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ClaimRefund @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  examId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CorrectExam @entity(immutable: true) {
+  id: Bytes!
+  examId: BigInt! # uint256
+  answers: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CreateExam @entity(immutable: true) {
+  id: Bytes!
+  internal_id: BigInt! # uint256
+  name: String! # string
+  description: String! # string
+  endTime: BigInt! # uint256
+  status: Int! # uint8
+  questions: [String!]! # string[]
+  answers: [BigInt!]! # uint256[]
+  price: BigInt! # uint256
+  baseScore: BigInt! # uint256
+  imageUrl: String! # string
+  users: [Bytes!]! # address[]
+  etherAccumulated: BigInt! # uint256
+  certifier: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SubmitAnswersFree @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  examId: BigInt! # uint256
+  hashedAnswer: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SubmitAnswersPaid @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  examId: BigInt! # uint256
+  hashedAnswer: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Transfer @entity(immutable: true) {
+  id: Bytes!
+  from: Bytes! # address
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
