@@ -13,6 +13,7 @@ interface Props extends TextProps {
   large?: boolean;
   xs?: boolean;
   bold?: boolean;
+  size?: string;
   block?: boolean;
   color?: string;
   htmlFor?: string;
@@ -38,7 +39,6 @@ const ExportText: FC<Props> = ({ className = '', children, $highlight, tiny, bol
   return (
     <Text
       {...props}
-      htmlFor={props.htmlFor}
       as={props.as || 'span'}
       className={`whitespace-pre-line
           ${tiny ? 'text-xs text-gray-400' : ''}
