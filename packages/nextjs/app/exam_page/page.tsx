@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { Box } from '@chakra-ui/react';
+import { Box } from "@chakra-ui/react";
 import { PageWrapper, Button, Title } from "~~/components";
 import { useAccount } from "wagmi";
-import { Web3 } from 'web3';
+import { Web3 } from "web3";
 import { handleCancelExam, handleClaimCertificate, handleCorrectExam, handleRefundExam, handleSubmitAnswersFree, handleSubmitAnswersPaid } from "./helperFunctions/WriteToContract";
 import ExamPageWithMessage from "./_components/ExamPageWithMessage";
 import { ExamStage } from "../../types/ExamStage";

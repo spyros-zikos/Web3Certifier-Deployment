@@ -1,17 +1,14 @@
 "use client";
 
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { Alert, Button, Title, Input, TextArea } from "~~/components";
-import { useRouter } from "next/navigation";
-
-import React, { useEffect, useState } from "react";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { Title } from "~~/components";
+import React, { useState } from "react";
 import { SearchBar } from "./_components/SearchBar";
-import { Text } from "@chakra-ui/react";
-import { useAccount } from "wagmi";
+// import { useAccount } from "wagmi";
 import { ExamCard, PageWrapper } from "~~/components";
 
-const MarketplacePage: React.FC = () => {
-    const { address } = useAccount();
+const SearchExamsPage: React.FC = () => {
+    // const { address } = useAccount();
     const [searchTerm, setSearchTerm] = useState("");
 
     const { data: lastExamId, refetch } = useScaffoldReadContract({
@@ -37,4 +34,4 @@ const MarketplacePage: React.FC = () => {
     );
 };
 
-export default MarketplacePage;
+export default SearchExamsPage;

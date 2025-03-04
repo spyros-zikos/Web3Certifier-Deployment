@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text } from '@chakra-ui/react';
+import React from "react";
+import { Text } from "@chakra-ui/react";
 import { PageWrapper, Button, Title } from "~~/components";
 
 const CancelExamPage = ({onClick}: {onClick:()=>void}) => {

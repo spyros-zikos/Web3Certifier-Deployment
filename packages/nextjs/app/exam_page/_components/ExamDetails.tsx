@@ -1,6 +1,6 @@
-import React from 'react'
-import { VStack, Image } from '@chakra-ui/react';
-import ExamDetail from './ExamDetail';
+import React from "react"
+import { VStack, Image } from "@chakra-ui/react";
+import ExamDetail from "./ExamDetail";
 
 const ExamDetails = ({exam, questions, callToAction}: {exam: Exam|undefined, questions: any, callToAction: any}) => {
     return (

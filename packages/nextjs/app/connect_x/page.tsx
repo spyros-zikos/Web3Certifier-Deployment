@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { Box } from '@chakra-ui/react';
+import { Box } from "@chakra-ui/react";
 import { PageWrapper, Button, Title } from "~~/components";
 import { useAccount } from "wagmi";
 
-const page = () => {
+const Page = () => {
     const { address } = useAccount();
     const [ username, setTheUsername ] = useState<string>('')
     const { writeContractAsync: setUsername } = useScaffoldWriteContract("Certifier");
@@ -45,4 +45,4 @@ const page = () => {
     );
 }
 
-export default page
+export default Page

@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useEffect } from 'react'
+import React from "react";
 import { createRef, useCallback, useState } from "react";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { Alert, Button, Title, Input, TextArea, PageWrapper } from "~~/components";
-import { Text } from "@chakra-ui/react";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { Button, Title, Input, TextArea, PageWrapper } from "~~/components";
 import { useDropzone } from "react-dropzone";
 import { singleUpload } from "~~/services/ipfs";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import { get } from 'lodash';
 
 
 const CreateExam = () => {

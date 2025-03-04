@@ -2,7 +2,7 @@
                          SUBMIT EXAM PAID
 //////////////////////////////////////////////////////////////*/
 
-export const handleSubmitAnswersPaid = async (submitAnswersPaid: any, id: bigint, hashedAnswer: string, examPrice: BigInt) => {
+export const handleSubmitAnswersPaid = async (submitAnswersPaid: any, id: bigint, hashedAnswer: string, examPrice: bigint) => {
     await submitAnswersPaid({
         functionName: "submitAnswersPaid",
         args: [id, `0x${hashedAnswer?.substring(2)}`],

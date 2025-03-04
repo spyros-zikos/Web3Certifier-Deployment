@@ -1,6 +1,6 @@
-import React from 'react'
-import ExamDetails from './ExamDetails';
-import { Box } from '@chakra-ui/react';
+import React from "react"
+import ExamDetails from "./ExamDetails";
+import { Box } from "@chakra-ui/react";
 
 const ExamPageWithMessage = ({exam, message}:
     { exam: Exam|undefined, message: any }) => {
