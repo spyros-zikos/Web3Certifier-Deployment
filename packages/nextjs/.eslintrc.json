@@ -11,5 +11,6 @@
         "endOfLine": "auto"
       }
     ]
-  }
+  },
+  "ignoreDuringBuilds": true
 }
