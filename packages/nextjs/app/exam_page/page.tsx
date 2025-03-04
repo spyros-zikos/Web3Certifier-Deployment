@@ -47,7 +47,7 @@ const ExamPage = () => {
         args: [address, id],
     }).data;
 
-    const getTimeToCorrectExam: BigInt | undefined = useScaffoldReadContract({
+    const getTimeToCorrectExam: bigint | undefined = useScaffoldReadContract({
         contractName: "Certifier",
         functionName: "getTimeToCorrectExam",
     }).data;
@@ -85,7 +85,7 @@ const ExamPage = () => {
 
     // Get answers, key, address
     const keyLength = 10;
-    const answersAsNumber: BigInt = answers ? getAnswerAsNumber(answers) : BigInt(0);
+    const answersAsNumber: bigint = answers ? getAnswerAsNumber(answers) : BigInt(0);
     const [randomKey, _] = useState(Math.floor((10**keyLength) * Math.random()));
 
     const web3 = window.ethereum ? new Web3(window.ethereum) : new Web3();
@@ -212,8 +212,8 @@ const ExamPage = () => {
             case ExamStage.User_ClaimCertificate:
                 const key = parseInt(userPasswordInput.substring(userPasswordInput.length - keyLength));
                 let answersInt = parseInt(userPasswordInput.substring(0, userPasswordInput.length - keyLength));
-                let answersIntCopy = answersInt;
-                let answersArray: bigint[] = [];
+                const answersIntCopy = answersInt;
+                const answersArray: bigint[] = [];
                 for (let i = 0; i < userPasswordInput.length - keyLength; i++) {
                     answersArray.push(BigInt(answersInt % 10));
                     answersInt = Math.floor(answersInt / 10);
