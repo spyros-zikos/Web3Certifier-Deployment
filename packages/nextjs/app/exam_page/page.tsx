@@ -12,10 +12,16 @@ import ExamPageWithMessage from "./_components/ExamPageWithMessage";
 import { ExamStage } from "../../types/ExamStage";
 import ExamPageWithSubmit from "./_components/ExamPageWithSubmit";
 
-const ExamPage = () => {
+function getId() {
     const searchParams = useSearchParams();
-    const { address } = useAccount();
     const id = BigInt(searchParams.get("id")!);
+    return id;
+}
+const ExamPage = () => {
+    // const searchParams = useSearchParams();
+    const { address } = useAccount();
+    // const id = BigInt(searchParams.get("id")!);
+    const id = getId();
 
     const exam: Exam | undefined = useScaffoldReadContract({
         contractName: "Certifier",
