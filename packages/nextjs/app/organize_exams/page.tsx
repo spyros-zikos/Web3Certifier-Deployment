@@ -3,7 +3,7 @@
 import React from "react";
 import { createRef, useCallback, useState } from "react";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { Button, Title, Input, TextArea, PageWrapper } from "~~/components";
+import { Button, Title, Input, Text, TextArea, PageWrapper } from "~~/components";
 import { useDropzone } from "react-dropzone";
 import { singleUpload } from "~~/services/ipfs";
 import { PhotoIcon } from "@heroicons/react/24/outline";
@@ -19,7 +19,10 @@ const CreateExam = () => {
     const [examPrice, setExamPrice] = useState<number>();
     const [examBaseScore, setExamBaseScore] = useState<string>("");
     const [imageUrl, setImageUrl] = useState<string>("");
-    // const [ethPrice, setEthPrice] = useState<number>(0);
+
+    const requiredDetailsAreFilled = () => {
+        return examName&&examDescription&&examEndTime&&examBaseScore&&questions[0];
+    }
 
     const { writeContractAsync: createExam } = useScaffoldWriteContract("Certifier");
     const handleCreateExam = async () => {
@@ -33,9 +36,9 @@ const CreateExam = () => {
                 examDescription,
                 BigInt(new Date(examEndTime.toString()).getTime() / 1000),
                 questions,
-                BigInt(examPrice! * 1e18),
+                examPrice ? BigInt(examPrice * 1e18) : BigInt(0),
                 BigInt(examBaseScore),
-                imageUrl
+                imageUrl || "https://0a050602b1c1aeae1063a0c8f5a7cdac.ipfscdn.io/ipfs/Qme6b3de9ATPVjNh5mhFPwHgJUmqKz8vqYx2LPj6j3uQTY/KNOWLEDGE.png"
             ],
             },
             {
@@ -50,19 +53,6 @@ const CreateExam = () => {
           console.log("nft mint error", error);
         }
     };
-
-    // const getLastExamId = Number(
-    //     useScaffoldReadContract({
-    //         contractName: 'Certifier',
-    //         functionName: 'getLastExamId',
-    //     }).data || 0,
-    // );
-    // const getExam = useScaffoldReadContract({
-    //         contractName: 'Certifier',
-    //         functionName: 'getExam',
-    //         args: [BigInt(0)],
-    //     }).data || 0;
-
     
     const onDrop = useCallback(
         async (acceptedFiles: File[]) => {
@@ -73,40 +63,17 @@ const CreateExam = () => {
         }, []
     );
 
-    const labelMarginAndPadding = 'm-2 mt-4 block';
-
     const { getRootProps } = useDropzone({ onDrop, accept: { "image/*": [] } });
     const dropZoneRef: React.LegacyRef<HTMLDivElement> | undefined = createRef();
 
-        
-    // const getEthAmount = async () => {
-    //     const response = await fetch(`https://api.etherscan.io/api?module=stats&action=ethprice&apikey=ETHERSCAN_API_KEY`, {
-    //         method: 'GET',
-    //     });
-    //     const data = await response.json();
-    //     const ethUsdRate = data.result.ethusd;
-    //     // console.log(ethPrice);
-    //     return ethUsdRate;
-    // };
-
-    // useEffect(() => {
-    //     (async () => {
-    //       try {
-    //         const ethUsdRate = await getEthAmount();
-    //         setEthPrice(ethUsdRate);
-    //       } catch (err) {
-    //         console.error(err);
-    //       }
-    //     })();
-    //   }, []);
-
+    const labelMarginAndPadding = 'm-2 mt-4 block';
 
     return (
         <PageWrapper>
             {/* <div className="container my-10"> */}
             <Title>Create Exams</Title>
             <div>
-                <label className={`${labelMarginAndPadding}`}>Name</label>
+                <label className={`${labelMarginAndPadding}`}>Name *</label>
                 <Input
                     value={examName}
                     type="text"
@@ -115,7 +82,7 @@ const CreateExam = () => {
                         setExamName(e.target.value);
                     }}
                 />
-                <label className={`${labelMarginAndPadding}`}>Description</label>
+                <label className={`${labelMarginAndPadding}`}>Description *</label>
                 <Input
                     value={examDescription}
                     type="text"
@@ -124,7 +91,7 @@ const CreateExam = () => {
                         setExamDescription(e.target.value);
                     }}
                 />
-                <label className={`${labelMarginAndPadding}`}>End Time</label>
+                <label className={`${labelMarginAndPadding}`}>End Time *</label>
                 <Input
                     value={examEndTime}
                     type="datetime-local"
@@ -142,7 +109,7 @@ const CreateExam = () => {
                         setExamPrice(e.target.value);
                     }}
                 />
-                <label className={`${labelMarginAndPadding}`}>Base Score</label>
+                <label className={`${labelMarginAndPadding}`}>Base Score *</label>
                 <Input
                     value={examBaseScore}
                     className="mb-4"
@@ -152,7 +119,7 @@ const CreateExam = () => {
                         setExamBaseScore(e.target.value);
                     }}
                 />
-                <label className={`${labelMarginAndPadding}`}>Questions</label>
+                <label className={`${labelMarginAndPadding}`}>Questions *</label>
                 {questions.map((question, indx) => (
                     <TextArea
                     key={indx}
@@ -201,14 +168,10 @@ const CreateExam = () => {
                         />
                 </div>
 
-                <Button onClick={handleCreateExam} className="block mt-8">
+                {!requiredDetailsAreFilled() && <Text mt="10" color="red" display="block">* Fields are required</Text>}
+                <Button disabled={!requiredDetailsAreFilled()} onClick={handleCreateExam} className="block mt-8">
                     Create Exam
                 </Button>
-                {/* <Alert
-                    type="success"
-                    message="Exam Created Successfully!"
-                    className='w-[350px] mt-4'
-                /> */}
             </div>
         </PageWrapper>
     )

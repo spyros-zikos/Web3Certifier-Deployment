@@ -4,6 +4,7 @@ interface Props {
   className?: string;
   children: any;
   onClick: any;
+  disabled?: boolean;
 }
 
 const Button: FC<Props> = ({ className = '', children, ...props }) => {

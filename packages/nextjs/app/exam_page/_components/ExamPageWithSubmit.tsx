@@ -35,24 +35,24 @@ const ExamPageWithSubmit = ({exam, answers, setAnswers, action, showAnswers}:
                             <div className="mt-6 mb-2 border-2 border-gray-400 p-2">
                                 <div className="whitespace-pre-wrap">{question}</div>
                                 {showAnswers &&
-                                <>
-                                <label className="mr-5 mt-4">
-                                    <input type="radio" name={`question-${index}`} value="1" />
-                                    <span className="ml-1">1</span>
-                                </label>
-                                <label className="mr-5">
-                                    <input type="radio" name={`question-${index}`} value="2" />
-                                    <span className="ml-1">2</span>
-                                </label>
-                                <label className="mr-5">
-                                    <input type="radio" name={`question-${index}`} value="3" />
-                                    <span className="ml-1">3</span>
-                                </label>
-                                <label className="mr-5">
-                                    <input type="radio" name={`question-${index}`} value="4" />
-                                    <span className="ml-1">4</span>
-                                </label>
-                                </>}
+                                <div className="mt-4">
+                                    <label className="mr-5 mt-4">
+                                        <input type="radio" name={`question-${index}`} value="1" />
+                                        <span className="ml-1">1</span>
+                                    </label>
+                                    <label className="mr-5">
+                                        <input type="radio" name={`question-${index}`} value="2" />
+                                        <span className="ml-1">2</span>
+                                    </label>
+                                    <label className="mr-5">
+                                        <input type="radio" name={`question-${index}`} value="3" />
+                                        <span className="ml-1">3</span>
+                                    </label>
+                                    <label className="mr-5">
+                                        <input type="radio" name={`question-${index}`} value="4" />
+                                        <span className="ml-1">4</span>
+                                    </label>
+                                </div>}
                             </div>
                         </form>
                     </Box>

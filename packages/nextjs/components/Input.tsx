@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 
 interface Props {
   className?: string;
-  value: any;
+  value?: any;
   type?: any;
   placeholder?: any;
+  checked?: any;
   onChange: any;
 }
 
