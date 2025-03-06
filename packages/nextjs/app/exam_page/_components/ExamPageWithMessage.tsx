@@ -18,7 +18,7 @@ const ExamPageWithMessage = ({exam, message}:
             }
             callToAction={
                 <Box className="mt-12 mb-8">
-                    <div>{message}</div>
+                    <div className="whitespace-pre-wrap">{message}</div>
                 </Box>
             }
         />

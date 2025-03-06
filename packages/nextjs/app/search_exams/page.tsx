@@ -1,13 +1,13 @@
 "use client";
 
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { Input, Title } from "~~/components";
+import { Title } from "~~/components";
 import React, { useEffect, useState } from "react";
 import { SearchBar } from "./_components/SearchBar";
 import { useAccount } from "wagmi";
 import { ExamCard, PageWrapper } from "~~/components";
 import { gql, request } from 'graphql-request';
-import { set } from "nprogress";
+import { graphUrl } from "~~/utils/constants/constants";
 
 const SearchExamsPage: React.FC = () => {
     const { address } = useAccount();
@@ -42,8 +42,7 @@ const SearchExamsPage: React.FC = () => {
                         examId
                     }
                 }`;
-                const url = 'https://api.studio.thegraph.com/query/103564/web3certifier-sepolia/version/latest';
-                const response: any = await request(url, query);
+                const response: any = await request(graphUrl, query);
                 const data = await response;
                 const paidTokenIdList = data.submitAnswersPaids;
                 const freeTokenIdList = data.submitAnswersFrees;
@@ -64,8 +63,6 @@ const SearchExamsPage: React.FC = () => {
             <Title>Explore Exams</Title>
             <SearchBar setSearchTerm={setSearchTerm} /> {/*To fix border colors*/}
             <div className="mb-16 mt-2 w-full flex items-center justify-start">
-                        {/* <Box className="w-full flex items-center justify-start mb-16 mx-5"> */}
-                
                 <label className="pb-[3px] mr-2">My Exams</label>
                 <input
                     checked={showMyExams}

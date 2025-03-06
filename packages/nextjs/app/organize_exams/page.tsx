@@ -8,6 +8,7 @@ import { useDropzone } from "react-dropzone";
 import { singleUpload } from "~~/services/ipfs";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { defaultImage } from "~~/utils/constants/constants";
 
 
 const CreateExam = () => {
@@ -38,7 +39,7 @@ const CreateExam = () => {
                 questions,
                 examPrice ? BigInt(examPrice * 1e18) : BigInt(0),
                 BigInt(examBaseScore),
-                imageUrl || "https://0a050602b1c1aeae1063a0c8f5a7cdac.ipfscdn.io/ipfs/Qme6b3de9ATPVjNh5mhFPwHgJUmqKz8vqYx2LPj6j3uQTY/KNOWLEDGE.png"
+                imageUrl || defaultImage
             ],
             },
             {

@@ -11,6 +11,7 @@ import { handleCancelExam, handleClaimCertificate, handleCorrectExam, handleRefu
 import ExamPageWithMessage from "./_components/ExamPageWithMessage";
 import { ExamStage } from "../../types/ExamStage";
 import ExamPageWithSubmit from "./_components/ExamPageWithSubmit";
+import getCertifierStatsAfterCorrection from "./helperFunctions/GetStats";
 
 
 const ExamPage = () => {
@@ -52,20 +53,20 @@ const ExamPage = () => {
         contractName: "Certifier",
         functionName: "getTimeToCorrectExam",
     }).data;
-
-    const userHasNotParticipated = userAnswer==="0x0000000000000000000000000000000000000000000000000000000000000000";
-
+    
     const { writeContractAsync: submitAnswersFree } = useScaffoldWriteContract("Certifier");
     const { writeContractAsync: submitAnswersPaid } = useScaffoldWriteContract("Certifier");
     const { writeContractAsync: cancelExam } = useScaffoldWriteContract("Certifier");
     const { writeContractAsync: refundExam } = useScaffoldWriteContract("Certifier");
     const { writeContractAsync: claimCertificate } = useScaffoldWriteContract("Certifier");
     const { writeContractAsync: correctExam } = useScaffoldWriteContract("Certifier");
-
+    
     const initialAnswers = exam?.questions.map(() => BigInt(0));
     const [answers, setAnswers] = useState<bigint[]>(initialAnswers!);
     const [userPasswordInput, setUserPasswordInput] = useState<string>("");
     const [correctAnswersLength, setCorrectAnswersLength] = useState<number>(-1);
+    const [certifierStatsAfterCorrection, setCertifierStatsAfterCorrection] = useState<string>("");
+    const userHasNotParticipated = userAnswer==="0x0000000000000000000000000000000000000000000000000000000000000000";
 
     useEffect(() => {
         if (answers === undefined)
@@ -94,14 +95,23 @@ const ExamPage = () => {
 
     const userPassword = String(answersAsNumber) + String(randomKey).padStart(keyLength, '0');
 
-
-
+    // Check if the exam needs to be corrected and if the correction time has passed
     const currentTimestamp = BigInt(Math.floor(new Date().getTime() / 1000));
     const needsCorrecting = exam && (exam.status === 0 &&
         (BigInt(exam.endTime.toString()) < currentTimestamp));
     const correctionTimePassed = exam && getTimeToCorrectExam && needsCorrecting &&
         (BigInt(exam.endTime.toString()) + BigInt(getTimeToCorrectExam!.toString()) < currentTimestamp);
 
+    // Stats
+    useEffect(() => {
+        const fetchData = async () => {
+            const stats = await getCertifierStatsAfterCorrection(exam!);
+            console.log(stats);
+            setCertifierStatsAfterCorrection(stats);
+        };
+        if (exam) fetchData();
+    }, [exam]);
+    
 
     const getExamStage = () => {
         if (address === exam?.certifier) {
@@ -151,11 +161,11 @@ const ExamPage = () => {
             case ExamStage.User_WaitForCorrection:
                 return "This exam is being corrected by the certifier!";
             case ExamStage.Certifier_EndStats:
-                return "This exam has ended! View the certifier stats!"; // TODO add stats
+                return "This exam has ended!\n\n" + certifierStatsAfterCorrection;
             case ExamStage.User_EndStats:
-                return "This exam has ended! View your stats!"; // TODO add stats
+                return "This exam has ended! You completed it successfully!"; // Can add stats
             case ExamStage.User_Details:
-                return "This exam has ended. You did not participate!";
+                return "This exam has ended. You did not participate!"; // Can add stats
             case ExamStage.Both_CancelStats:
                 return "The exam has been cancelled!";
             default:
@@ -288,8 +298,6 @@ const ExamPage = () => {
 
     return (
         <PageWrapper>
-            {/* <Title>Exam Page</Title> */}
-
             {pageDoesAction() ? 
                 <ExamPageWithSubmit
                     exam={exam}

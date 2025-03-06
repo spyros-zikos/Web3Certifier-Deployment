@@ -1,13 +1,14 @@
 import React from "react"
 import { VStack, Image } from "@chakra-ui/react";
 import ExamDetail from "./ExamDetail";
+import { defaultImage } from "~~/utils/constants/constants";
 
 const ExamDetails = ({exam, questions, callToAction}: {exam: Exam|undefined, questions: any, callToAction: any}) => {
     return (
         <VStack>
             <div className="max-w-[400px]">
             <div className="text-[40px] font-bold mb-4 ">{exam?.name}</div>
-            <Image src={exam?.imageUrl} alt={"Exam Image"} maxWidth="500px" maxHeight="500px" mb="6" w={350} h={350} objectFit={"cover"}/>
+            <Image src={exam?.imageUrl || defaultImage} alt={"Exam Image"} maxWidth="500px" maxHeight="500px" mb="6" w={350} h={350} objectFit={"cover"}/>
             <ExamDetail name="Description" value={exam?.description} />
             <ExamDetail name="End Time" value={exam?(new Date(Number(exam?.endTime)*1000)).toString() : 0} />
             <ExamDetail name="Status" value={exam?.status == 0 ? "Open" : "Ended"} />

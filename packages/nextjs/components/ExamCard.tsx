@@ -4,6 +4,7 @@ import { Button, Card, EtherInput } from "~~/components";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useRouter } from "next/navigation";
 import { Address } from "~~/components/scaffold-eth";
+import { defaultImage } from "~~/utils/constants/constants";
 
 interface CardProps {
     className?: string;
@@ -60,7 +61,7 @@ const ExamCard: React.FC<CardProps> = ({ className, id, searchTerm = "" }) => {
         <Card
             title={exam?.name}
             className={`${className || ""}`}
-            imageUrl={exam?.imageUrl}
+            imageUrl={exam?.imageUrl || defaultImage}
             footer={
                 <Button className="w-full" onClick={()=>{router.push(`/exam_page?id=${id}`);}}>
                     Explore
