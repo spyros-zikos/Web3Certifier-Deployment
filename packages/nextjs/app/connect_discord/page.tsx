@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useState } from "react";
 import { Box } from "@chakra-ui/react";
-import { PageWrapper, Button, Title } from "~~/components";
 import { useAccount } from "wagmi";
+import { Button, PageWrapper, Title } from "~~/components";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const Page = () => {
     const { address } = useAccount();
@@ -19,11 +19,11 @@ const Page = () => {
 
     return (
         <PageWrapper>
-            <Title>Connect Your X Account</Title>
+            <Title>Connect Your Discord Account</Title>
 
             <Box>
-                {storedUsername && `Your X Username: ${storedUsername}`}
-                <div className="mt-6 mb-2">Set new X username:</div>
+                {storedUsername && `Your Discord Username: ${storedUsername}`}
+                <div className="mt-6 mb-2">Set new Discord username:</div>
                 <input 
                     type="text"
                     onChange={e => {
@@ -45,4 +45,4 @@ const Page = () => {
     );
 }
 
-export default Page
+export default Page;

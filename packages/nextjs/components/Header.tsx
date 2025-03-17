@@ -30,8 +30,8 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <MagnifyingGlassIcon className="h-4 w-4" />,
   },
   {
-    label: "Connect X",
-    href: "/connect_x",
+    label: "Connect Discord",
+    href: "/connect_discord",
     icon: <ShareIcon className="h-4 w-4" />,
   },
 ];
