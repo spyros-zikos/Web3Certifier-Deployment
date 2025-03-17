@@ -5,65 +5,25 @@ import { gql, request } from 'graphql-request';
 
 function processUsername(unprocessedUsername: string) {
     let username = unprocessedUsername;
-    const symbols = [' ', '.', '!', '?', ':', ';', ','];
+    const symbols = [' ', '.', '!', '?', ':', ';', ',', '<', '>', '\n', '\r', '\t'];
     for (let i = 0; i < symbols.length; i++) {
         username = username.split(symbols[i])[0];
     }
     return username
 }
 
-export function getUserUsernameFromMessage(message: string) {
-    const agentUsername = process.env.TWITTER_USERNAME;
-    const usernames = message.split("@");
-    const processedUsernames = usernames.map(processUsername);
-    const usernamesWithoutAgent = processedUsernames.filter((e,i)=>(e!==agentUsername&&i!=0));
+export function getDiscordIdFromMessage(message: string) {
+    const agentDiscordId = process.env.AGENT_DISCORD_ID;
+    const ids = message.split("@");
+    const processedIds = ids.map(processUsername);
+    const idsWithoutAgent = processedIds.filter((e,i)=>(e!==agentDiscordId&&i!=0));
 
-    const numOfUsernames = usernamesWithoutAgent.length;
+    const numOfIds = idsWithoutAgent.length;
     console.log("message:", message);
-    console.log("usernames:", usernamesWithoutAgent);
-    if (numOfUsernames === 0 || numOfUsernames === 2) return;
+    console.log("ids:", idsWithoutAgent);
+    if (numOfIds === 0 || numOfIds === 2) return;
 
-    return usernamesWithoutAgent[0];
-}
-
-// GET USER TWEETS
-
-export function processTweet(tweet: string) {
-    let processedTweet = "";
-    tweet.split("<").forEach(line => {
-        const parts = line.split(">")
-        if (parts.length > 1) {
-            processedTweet += parts[1];
-        } else {
-            processedTweet += line;
-        }
-    })
-    return processedTweet;
-}
-
-export async function getTweetsStringFromUser(senderUsername: string) {
-    // Get tweets
-    const scraper = new Scraper();
-    await scraper.login(
-        process.env.TWITTER_USERNAME,
-        process.env.TWITTER_PASSWORD,
-        process.env.TWITTER_EMAIL
-    );
-    const NUMBER_OF_TWEETS_TO_FETCH = 5;
-    const tweets = scraper.getTweets(senderUsername, NUMBER_OF_TWEETS_TO_FETCH);
-    // Format tweets
-    let counter = 1;
-    let tweetsString = "";
-    while (true) {
-        const tweet = await tweets.next();
-        if (tweet.done) break;
-        const unprocessedTweet = tweet.value.html;
-        const processedTweet = processTweet(unprocessedTweet);
-        tweetsString += "TWEET " + counter + ":\n" + processedTweet + "\n\n";
-        counter++;
-    }
-    console.log("\ntweetsString:\n", tweetsString);
-    return tweetsString;
+    return idsWithoutAgent[0];
 }
 
 // GRAPH QUERIES
@@ -78,8 +38,7 @@ export async function getExamsStringFromGraph() {
             name
         }
     }`;
-    const url = 'https://api.studio.thegraph.com/query/103564/web3certifier-sepolia/version/latest';
-    const response: any = await request(url, query);
+    const response: any = await request(process.env.THE_GRAPH_URL, query);
     const data = await response;
     const examsList = data.createExams;
     const exams = examsList

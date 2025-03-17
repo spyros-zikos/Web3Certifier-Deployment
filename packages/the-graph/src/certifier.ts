@@ -6,6 +6,12 @@ import {
   ClaimRefund as ClaimRefundEvent,
   CorrectExam as CorrectExamEvent,
   CreateExam as CreateExamEvent,
+  OwnershipTransferred as OwnershipTransferredEvent,
+  SetExamCreationFee as SetExamCreationFeeEvent,
+  SetFeeCollector as SetFeeCollectorEvent,
+  SetSubmissionFee as SetSubmissionFeeEvent,
+  SetTimeToCorrectExam as SetTimeToCorrectExamEvent,
+  SetUsername as SetUsernameEvent,
   SubmitAnswersFree as SubmitAnswersFreeEvent,
   SubmitAnswersPaid as SubmitAnswersPaidEvent,
   Transfer as TransferEvent
@@ -18,6 +24,12 @@ import {
   ClaimRefund,
   CorrectExam,
   CreateExam,
+  OwnershipTransferred,
+  SetExamCreationFee,
+  SetFeeCollector,
+  SetSubmissionFee,
+  SetTimeToCorrectExam,
+  SetUsername,
   SubmitAnswersFree,
   SubmitAnswersPaid,
   Transfer
@@ -127,6 +139,90 @@ export function handleCreateExam(event: CreateExamEvent): void {
   entity.users = changetype<Bytes[]>(event.params.users)
   entity.etherAccumulated = event.params.etherAccumulated
   entity.certifier = event.params.certifier
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleOwnershipTransferred(
+  event: OwnershipTransferredEvent
+): void {
+  let entity = new OwnershipTransferred(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.previousOwner = event.params.previousOwner
+  entity.newOwner = event.params.newOwner
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleSetExamCreationFee(event: SetExamCreationFeeEvent): void {
+  let entity = new SetExamCreationFee(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.fee = event.params.fee
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleSetFeeCollector(event: SetFeeCollectorEvent): void {
+  let entity = new SetFeeCollector(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.feeCollector = event.params.feeCollector
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleSetSubmissionFee(event: SetSubmissionFeeEvent): void {
+  let entity = new SetSubmissionFee(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.fee = event.params.fee
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleSetTimeToCorrectExam(
+  event: SetTimeToCorrectExamEvent
+): void {
+  let entity = new SetTimeToCorrectExam(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.time = event.params.time
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleSetUsername(event: SetUsernameEvent): void {
+  let entity = new SetUsername(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.user = event.params.user
+  entity.username = event.params.username
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp

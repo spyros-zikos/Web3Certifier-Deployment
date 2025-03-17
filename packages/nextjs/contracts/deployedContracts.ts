@@ -13,11 +13,6 @@ const deployedContracts = {
           type: "constructor",
           inputs: [
             {
-              name: "timeToCorrectExam",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
               name: "priceFeed",
               type: "address",
               internalType: "address",
@@ -224,7 +219,7 @@ const deployedContracts = {
             {
               name: "",
               type: "tuple",
-              internalType: "struct Exam",
+              internalType: "struct ICertifier.Exam",
               components: [
                 {
                   name: "id",
@@ -249,7 +244,7 @@ const deployedContracts = {
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum Status",
+                  internalType: "enum ICertifier.Status",
                 },
                 {
                   name: "questions",
@@ -298,7 +293,65 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getExamCreationFee",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getFeeCollector",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getLastExamId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getStatus",
+          inputs: [
+            {
+              name: "examId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint8",
+              internalType: "enum ICertifier.Status",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getSubmissionFee",
           inputs: [],
           outputs: [
             {
@@ -511,6 +564,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "ownerOf",
           inputs: [
             {
@@ -538,6 +604,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
           outputs: [],
           stateMutability: "nonpayable",
         },
@@ -605,6 +678,58 @@ const deployedContracts = {
               name: "approved",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setExamCreationFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setFeeCollector",
+          inputs: [
+            {
+              name: "feeCollector",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setSubmissionFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setTimeToCorrectExam",
+          inputs: [
+            {
+              name: "time",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [],
@@ -728,6 +853,19 @@ const deployedContracts = {
               name: "tokenId",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [],
@@ -891,7 +1029,7 @@ const deployedContracts = {
               name: "status",
               type: "uint8",
               indexed: false,
-              internalType: "enum Status",
+              internalType: "enum ICertifier.Status",
             },
             {
               name: "questions",
@@ -940,6 +1078,96 @@ const deployedContracts = {
               type: "address",
               indexed: false,
               internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetExamCreationFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetFeeCollector",
+          inputs: [
+            {
+              name: "feeCollector",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSubmissionFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTimeToCorrectExam",
+          inputs: [
+            {
+              name: "time",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetUsername",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "username",
+              type: "string",
+              indexed: false,
+              internalType: "string",
             },
           ],
           anonymous: false,
@@ -1053,6 +1281,38 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "Certifier__BaseScoreExceedsNumberOfQuestions",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Certifier__CertifierCannotSubmit",
+          inputs: [
+            {
+              name: "examId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "Certifier__EndTimeIsInThePast",
+          inputs: [
+            {
+              name: "endTime",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "nowTime",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "Certifier__EtherTransferFailed",
           inputs: [],
         },
@@ -1099,6 +1359,11 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+        },
+        {
+          type: "error",
+          name: "Certifier__NameCannotBeEmpty",
+          inputs: [],
         },
         {
           type: "error",
@@ -1357,6 +1622,28 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ReentrancyGuardReentrantCall",
           inputs: [],
         },
@@ -1398,21 +1685,21 @@ const deployedContracts = {
           "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom:
           "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },
   11155111: {
     Certifier: {
-      address: "0x00840ff961c471ddd33b17d188e72ee4c4694fad",
+      address: "0x005eff2f7dc2a12ab868ee1a2e4aca8fcde81210",
       abi: [
         {
           type: "constructor",
           inputs: [
-            {
-              name: "timeToCorrectExam",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "priceFeed",
               type: "address",
@@ -1620,7 +1907,7 @@ const deployedContracts = {
             {
               name: "",
               type: "tuple",
-              internalType: "struct Exam",
+              internalType: "struct ICertifier.Exam",
               components: [
                 {
                   name: "id",
@@ -1645,7 +1932,7 @@ const deployedContracts = {
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum Status",
+                  internalType: "enum ICertifier.Status",
                 },
                 {
                   name: "questions",
@@ -1694,7 +1981,65 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getExamCreationFee",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getFeeCollector",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getLastExamId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getStatus",
+          inputs: [
+            {
+              name: "examId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint8",
+              internalType: "enum ICertifier.Status",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getSubmissionFee",
           inputs: [],
           outputs: [
             {
@@ -1907,6 +2252,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "ownerOf",
           inputs: [
             {
@@ -1934,6 +2292,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
           outputs: [],
           stateMutability: "nonpayable",
         },
@@ -2001,6 +2366,58 @@ const deployedContracts = {
               name: "approved",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setExamCreationFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setFeeCollector",
+          inputs: [
+            {
+              name: "feeCollector",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setSubmissionFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setTimeToCorrectExam",
+          inputs: [
+            {
+              name: "time",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [],
@@ -2124,6 +2541,19 @@ const deployedContracts = {
               name: "tokenId",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [],
@@ -2287,7 +2717,7 @@ const deployedContracts = {
               name: "status",
               type: "uint8",
               indexed: false,
-              internalType: "enum Status",
+              internalType: "enum ICertifier.Status",
             },
             {
               name: "questions",
@@ -2336,6 +2766,96 @@ const deployedContracts = {
               type: "address",
               indexed: false,
               internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetExamCreationFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetFeeCollector",
+          inputs: [
+            {
+              name: "feeCollector",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSubmissionFee",
+          inputs: [
+            {
+              name: "fee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTimeToCorrectExam",
+          inputs: [
+            {
+              name: "time",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetUsername",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "username",
+              type: "string",
+              indexed: false,
+              internalType: "string",
             },
           ],
           anonymous: false,
@@ -2449,6 +2969,38 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "Certifier__BaseScoreExceedsNumberOfQuestions",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Certifier__CertifierCannotSubmit",
+          inputs: [
+            {
+              name: "examId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "Certifier__EndTimeIsInThePast",
+          inputs: [
+            {
+              name: "endTime",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "nowTime",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "Certifier__EtherTransferFailed",
           inputs: [],
         },
@@ -2495,6 +3047,11 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+        },
+        {
+          type: "error",
+          name: "Certifier__NameCannotBeEmpty",
+          inputs: [],
         },
         {
           type: "error",
@@ -2753,6 +3310,28 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ReentrancyGuardReentrantCall",
           inputs: [],
         },
@@ -2794,6 +3373,11 @@ const deployedContracts = {
           "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom:
           "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },

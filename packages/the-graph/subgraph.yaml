@@ -8,9 +8,9 @@ dataSources:
     name: Certifier
     network: sepolia
     source:
-      address: "0x00840ff961C471dDd33b17d188e72eE4C4694FAd"
+      address: "0x005efF2F7DC2A12Ab868EE1A2E4Aca8FCdE81210"
       abi: Certifier
-      startBlock: 7803096
+      startBlock: 7887579
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -23,6 +23,12 @@ dataSources:
         - ClaimRefund
         - CorrectExam
         - CreateExam
+        - OwnershipTransferred
+        - SetExamCreationFee
+        - SetFeeCollector
+        - SetSubmissionFee
+        - SetTimeToCorrectExam
+        - SetUsername
         - SubmitAnswersFree
         - SubmitAnswersPaid
         - Transfer
@@ -44,6 +50,18 @@ dataSources:
           handler: handleCorrectExam
         - event: CreateExam(indexed uint256,string,string,uint256,uint8,string[],uint256[],uint256,uint256,string,address[],uint256,address)
           handler: handleCreateExam
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: SetExamCreationFee(uint256)
+          handler: handleSetExamCreationFee
+        - event: SetFeeCollector(address)
+          handler: handleSetFeeCollector
+        - event: SetSubmissionFee(uint256)
+          handler: handleSetSubmissionFee
+        - event: SetTimeToCorrectExam(uint256)
+          handler: handleSetTimeToCorrectExam
+        - event: SetUsername(address,string)
+          handler: handleSetUsername
         - event: SubmitAnswersFree(address,uint256,bytes32)
           handler: handleSubmitAnswersFree
         - event: SubmitAnswersPaid(address,uint256,bytes32)

@@ -8,6 +8,12 @@ import {
   ClaimRefund,
   CorrectExam,
   CreateExam,
+  OwnershipTransferred,
+  SetExamCreationFee,
+  SetFeeCollector,
+  SetSubmissionFee,
+  SetTimeToCorrectExam,
+  SetUsername,
   SubmitAnswersFree,
   SubmitAnswersPaid,
   Transfer
@@ -217,6 +223,102 @@ export function createCreateExamEvent(
   )
 
   return createExamEvent
+}
+
+export function createOwnershipTransferredEvent(
+  previousOwner: Address,
+  newOwner: Address
+): OwnershipTransferred {
+  let ownershipTransferredEvent =
+    changetype<OwnershipTransferred>(newMockEvent())
+
+  ownershipTransferredEvent.parameters = new Array()
+
+  ownershipTransferredEvent.parameters.push(
+    new ethereum.EventParam(
+      "previousOwner",
+      ethereum.Value.fromAddress(previousOwner)
+    )
+  )
+  ownershipTransferredEvent.parameters.push(
+    new ethereum.EventParam("newOwner", ethereum.Value.fromAddress(newOwner))
+  )
+
+  return ownershipTransferredEvent
+}
+
+export function createSetExamCreationFeeEvent(fee: BigInt): SetExamCreationFee {
+  let setExamCreationFeeEvent = changetype<SetExamCreationFee>(newMockEvent())
+
+  setExamCreationFeeEvent.parameters = new Array()
+
+  setExamCreationFeeEvent.parameters.push(
+    new ethereum.EventParam("fee", ethereum.Value.fromUnsignedBigInt(fee))
+  )
+
+  return setExamCreationFeeEvent
+}
+
+export function createSetFeeCollectorEvent(
+  feeCollector: Address
+): SetFeeCollector {
+  let setFeeCollectorEvent = changetype<SetFeeCollector>(newMockEvent())
+
+  setFeeCollectorEvent.parameters = new Array()
+
+  setFeeCollectorEvent.parameters.push(
+    new ethereum.EventParam(
+      "feeCollector",
+      ethereum.Value.fromAddress(feeCollector)
+    )
+  )
+
+  return setFeeCollectorEvent
+}
+
+export function createSetSubmissionFeeEvent(fee: BigInt): SetSubmissionFee {
+  let setSubmissionFeeEvent = changetype<SetSubmissionFee>(newMockEvent())
+
+  setSubmissionFeeEvent.parameters = new Array()
+
+  setSubmissionFeeEvent.parameters.push(
+    new ethereum.EventParam("fee", ethereum.Value.fromUnsignedBigInt(fee))
+  )
+
+  return setSubmissionFeeEvent
+}
+
+export function createSetTimeToCorrectExamEvent(
+  time: BigInt
+): SetTimeToCorrectExam {
+  let setTimeToCorrectExamEvent =
+    changetype<SetTimeToCorrectExam>(newMockEvent())
+
+  setTimeToCorrectExamEvent.parameters = new Array()
+
+  setTimeToCorrectExamEvent.parameters.push(
+    new ethereum.EventParam("time", ethereum.Value.fromUnsignedBigInt(time))
+  )
+
+  return setTimeToCorrectExamEvent
+}
+
+export function createSetUsernameEvent(
+  user: Address,
+  username: string
+): SetUsername {
+  let setUsernameEvent = changetype<SetUsername>(newMockEvent())
+
+  setUsernameEvent.parameters = new Array()
+
+  setUsernameEvent.parameters.push(
+    new ethereum.EventParam("user", ethereum.Value.fromAddress(user))
+  )
+  setUsernameEvent.parameters.push(
+    new ethereum.EventParam("username", ethereum.Value.fromString(username))
+  )
+
+  return setUsernameEvent
 }
 
 export function createSubmitAnswersFreeEvent(

@@ -7,10 +7,6 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 export const SearchBar = ({ setSearchTerm }: { setSearchTerm: any }) => {
     const [searchInput, setSearchInput] = useState("");
 
-    const handleSearch = () => {
-        setSearchTerm(searchInput);
-    };
-
     return (
         <Box className="w-full flex items-center justify-start mx-5">
             <input
@@ -22,7 +18,7 @@ export const SearchBar = ({ setSearchTerm }: { setSearchTerm: any }) => {
             />
             <button
                 className="border-2 border-neutral h-10 btn btn-sm btn-primary hover:border-accent"
-                onClick={handleSearch}
+                onClick={() => setSearchTerm(searchInput)}
             >
                 <MagnifyingGlassIcon className="mt-5 h-[22px] w-[22px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </button>

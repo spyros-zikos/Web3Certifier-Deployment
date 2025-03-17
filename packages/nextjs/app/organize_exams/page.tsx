@@ -2,7 +2,7 @@
 
 import React from "react";
 import { createRef, useCallback, useState } from "react";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { Button, Title, Input, Text, TextArea, PageWrapper } from "~~/components";
 import { useDropzone } from "react-dropzone";
 import { singleUpload } from "~~/services/ipfs";
@@ -25,6 +25,18 @@ const CreateExam = () => {
         return examName&&examDescription&&examEndTime&&examBaseScore&&questions[0];
     }
 
+    // Get exam creation fee (in $)
+    const { data: examCreationFee } = useScaffoldReadContract({
+        contractName: "Certifier",
+        functionName: "getExamCreationFee"
+    });
+    // Get exam creation fee (in ETH)
+    const { data: examCreationFeeInEth } = useScaffoldReadContract({
+        contractName: "Certifier",
+        functionName: "getUsdToEthRate",
+        args: [examCreationFee ? examCreationFee : BigInt(0)],
+    });
+
     const { writeContractAsync: createExam } = useScaffoldWriteContract("Certifier");
     const handleCreateExam = async () => {
         console.log("Exam creation begun");
@@ -41,6 +53,7 @@ const CreateExam = () => {
                 BigInt(examBaseScore),
                 imageUrl || defaultImage
             ],
+            value: examCreationFeeInEth,
             },
             {
             onBlockConfirmation: res => {
