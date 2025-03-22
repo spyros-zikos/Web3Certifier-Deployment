@@ -41,6 +41,8 @@ const Page = () => {
                     },
                 });
             }}>Submit</Button>
+
+            <p className="mt-6">Join the Discord server to communicate with the AI Agent <a href="https://discord.gg/Za9B5DxuBw" target="_blank"><u>here</u></a>.</p>
         </PageWrapper>
     );
 }
